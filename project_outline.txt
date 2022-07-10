@@ -1,0 +1,43 @@
+Projektname: Vorarlberg - Stadt und Kaff
+
+Ziel:
+	Es soll eine Karte erstellt werden, welche Vorarlberg in drei Zonen (A, B, C) aufspaltet in Abhängigkeit der Bevölkerung.
+	Jeder dieser Teile soll in etwa dieselbe Anzahl an Einwohnern haben. Das Ziehen der Grenzen erfolgt nur an Gemeindegrenzen.
+	
+	Die Karte selbst wird voraussichtlich manuell gezeichnet werden. Allerdings soll ein Algorithmus erstellt werden, welcher
+	die Variante bestimmt, in der die Zone A die kleinstmögliche Fläche besitzt und Zone C die größtmögliche (Zone B kriegt den Rest).
+	Eine wichtige Regel ist, dass die Zonen zusammenhängende Flächen sein müssen. Es darf also keine Exklaven geben.
+
+Notwendige Daten:
+	- Liste aller Gemeinden
+	- Einwohnerzahl jeder Gemeinde
+	- Fläche jeder Gemeinde
+	- Nachbargemeinden jeder Gemeinde (welche grenzt an welche, wichtig für zusammenhängende Zonen)
+
+Umsetzung:
+	- womöglich mit C/C++, um C zu verinnerlichen. Alternativ mit Java oder C#
+	- Ausgabe zuerst in einer .csv Datei. Erweiterung: Direkt eingefärbte SVG-Bilder plotten
+	- Vorgehensweise: Eine random Startgemeinde wählen und von dieser alle benachbarten Gemeinden betrachten. Aus diesen Nachbarn
+	  anschließend die Gemeinde mit der höchsten/niedrigsten Bevölkerungsdichte wählen und die aktuelle Zone um diese erweitern.
+	  Nun wieder alle angrenzenden Gemeinden der aktuellen Zone betrachten und erneut die beste für eine Erweiterung auswählen.
+
+Tipps:
+	- Die Datei ("Datenbank") mit der Liste Gemeinden gleich nach den Einwohnern ordnen. Dadurch kann man beim Durchprobieren
+	  der verschiedensten Gemeinde-Kombinationen schon einmal mit Gemeinden anfangen, die eine hohe Chance haben, am Ende auch
+	  Teil der jeweiligen Zone (A/C) zu sein.
+
+	- Nur die Gesamtbevölkerung Vorarlbergs hartkodiert angeben. Daraus den gewollten Teil (z.B. ein Drittel der Bevölkerung pro Zone)
+	  berechnen. Den Rest des Programmes auch so auslegen, dass man später auch mehr oder weniger Zonen einführen könnte.
+
+	- Die Fläche der ersten fertig generierten Zone A speichern. Sobald die Fläche eines neuen Versuches die aktuell beste Fläche
+	  übersteigt, kann der Versuch abgebrochen werden.
+
+	- Egal ob ich die Karte manuell einfärbe oder automatisch einfärben lasse, es wird sich anbieten, ein SVG-Template der Gemeinde-
+	  karte von Vorarlberg anzufertigen, bei der jede Gemeinde eine eigene Form ist, die sich separat einfärben lässt.
+
+
+Quellen:
+	CSV-Dateien in C bearbeiten: https://www.youtube.com/watch?v=mgq7iu4gEHQ
+
+SVG-Head:
+<svg width="800px" viewBox="-24364.851 -39134.178 53103.95 84849.197" style="background-color: black" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
