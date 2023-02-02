@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using VorarlbergPartitions.Resources;
+using VorarlbergPartitions.Models;
 
-namespace VorarlbergPartitions
+namespace VorarlbergPartitions.Core
 {
     class MunicipalityFactory
     {

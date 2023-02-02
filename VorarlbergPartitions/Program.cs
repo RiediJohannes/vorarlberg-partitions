@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using VorarlbergPartitions.Adapters;
+using VorarlbergPartitions.Core;
+using VorarlbergPartitions.Models;
 
 namespace VorarlbergPartitions
 {

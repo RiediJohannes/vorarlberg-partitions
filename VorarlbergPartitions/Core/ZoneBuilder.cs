@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using VorarlbergPartitions.Adapters;
+using VorarlbergPartitions.Models;
 
-
-namespace VorarlbergPartitions
+namespace VorarlbergPartitions.Core
 {
     class ZoneBuilder
     {
@@ -103,11 +104,10 @@ namespace VorarlbergPartitions
         private HashSet<Municipality> CheckForLonelyMunicipalities(Zone zone, Municipality plannedAnnexation)
         {
             // create a new HashSet reprensenting the proposed zone (incorporating the plannedAnnexation)
-            HashSet<Municipality> proposedZoneMembers = new HashSet<Municipality>(zone.Members);
-            proposedZoneMembers.Add(plannedAnnexation);
+            HashSet<Municipality> proposedZoneMembers = new(zone.Members) { plannedAnnexation };
 
             // create a HashSet of every municipality in the database that is not yet part of zone A
-            HashSet<Municipality> zonelessMunipals = new HashSet<Municipality>(_db.GetAllMunicipalities());
+            HashSet<Municipality> zonelessMunipals = new(_db.GetAllMunicipalities());
             zonelessMunipals.ExceptWith(proposedZoneMembers);
             zonelessMunipals.Remove(plannedAnnexation);
 

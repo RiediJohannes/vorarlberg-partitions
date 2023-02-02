@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace VorarlbergPartitions.Resources
+namespace VorarlbergPartitions.Core
 {
     internal interface IMunicipalityDataSource
     {

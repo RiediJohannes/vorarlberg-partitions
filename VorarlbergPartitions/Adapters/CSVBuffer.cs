@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using VorarlbergPartitions.Resources;
+using VorarlbergPartitions.Core;
 
-namespace VorarlbergPartitions
+namespace VorarlbergPartitions.Adapters
 {
     class CSVBuffer : IMunicipalityDataSource
     {

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using VorarlbergPartitions.Resources;
+﻿using System.Collections.Generic;
+using VorarlbergPartitions.Models;
 
-namespace VorarlbergPartitions
+namespace VorarlbergPartitions.Core
 {
     class MunicipalityDatabase
     {

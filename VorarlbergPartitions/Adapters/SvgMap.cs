@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Svg;
+﻿using Svg;
 using System.Drawing;
+using VorarlbergPartitions.Models;
 
-namespace VorarlbergPartitions
+namespace VorarlbergPartitions.Adapters
 {
     class SvgMap
     {

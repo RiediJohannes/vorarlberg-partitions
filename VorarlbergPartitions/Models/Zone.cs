@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Drawing;
 
-namespace VorarlbergPartitions
+namespace VorarlbergPartitions.Models
 {
     class Zone
     {
@@ -52,7 +50,7 @@ namespace VorarlbergPartitions
             _area += newMember.Area;                // add its area to the zone area
 
             // the new member is no longer a zone neighbour -> we remove it from the zone neighbours
-            _neighbours.Remove(newMember); 
+            _neighbours.Remove(newMember);
 
             // add the neighbours of the new member to the zone neighbours if they are not already part of the zone itself
             newMember.Neighbours.ForEach(neighbour =>
@@ -95,7 +93,7 @@ namespace VorarlbergPartitions
             return _members.Contains(municipality);
         }
 
-        
+
         private bool CanRemoveNeighbour(Municipality neighbour)
         {
             // don't remove a neighbour if it is part of the zone itself
