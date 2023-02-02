@@ -12,8 +12,7 @@ namespace VorarlbergPartitions
             Stopwatch runTimer = new Stopwatch();
             runTimer.Start();
 
-
-            var db = new MunicipalityDatabase("Datasheets/data_Gemeinden.csv");
+            var db = new MunicipalityDatabase(new CSVBuffer("Datasheets/data_Gemeinden.csv"));
             var VlbgMap = new SvgMap("Maps/Vorarlberg_Gemeinden.svg");
 
             ZoneBuilder builder = new ZoneBuilder(db, VlbgMap);

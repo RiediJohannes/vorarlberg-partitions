@@ -1,29 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using VorarlbergPartitions.Resources;
 
 namespace VorarlbergPartitions
 {
     class MunicipalityDatabase
     {
-        private readonly CSVBuffer _csv;
+        private readonly IMunicipalityDataSource _data;
         private readonly MunicipalityFactory _factory;
 
         public Municipality Total
         {
-            get => _factory.FromEntry(_csv.Total);
+            get => _factory.FromEntry(_data.Total);
         }
 
 
-        public MunicipalityDatabase(string csvPath)
+        public MunicipalityDatabase(IMunicipalityDataSource dataSource)
         {
-            _csv = new CSVBuffer(csvPath);
-            _factory = new MunicipalityFactory(csvPath);
+            _data = dataSource;
+            _factory = new MunicipalityFactory(dataSource);
         }
 
         public Municipality GetMunicipalityById(string municipalityId)
         {
-            string[] entry = _csv.GetEntry(municipalityId);
+            string[] entry = _data.GetEntry(municipalityId);
 
             return _factory.FromEntry(entry);
         }
@@ -32,7 +33,7 @@ namespace VorarlbergPartitions
         {
             List<Municipality> municipalities = new List<Municipality>();
 
-            foreach (string id in _csv.GetIDs())
+            foreach (string id in _data.GetIDs())
             {
                 var munipal = GetMunicipalityById(id);
                 municipalities.Add(munipal);
@@ -42,13 +43,13 @@ namespace VorarlbergPartitions
 
         public Municipality GetHighestDensityMunicipality()
         {
-            string[] entry = _csv.GetHighestDensityMunicipality();
+            string[] entry = _data.GetEntryWithMaxAttribute("density");
             return _factory.FromEntry(entry);
         }
 
         public Municipality GetLowestDensityMunicipality()
         {
-            string[] entry = _csv.GetLowestDensityMunicipality();
+            string[] entry = _data.GetEntryWithMinAttribute("density");
             return _factory.FromEntry(entry);
         }
     }

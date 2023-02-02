@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using VorarlbergPartitions.Resources;
 
 namespace VorarlbergPartitions
 {
-    class CSVBuffer
+    class CSVBuffer : IMunicipalityDataSource
     {
         private readonly Dictionary<string, string[]> _entries = new Dictionary<string, string[]>();
 
@@ -37,19 +38,14 @@ namespace VorarlbergPartitions
             {
                 // the municipality id becomes the key in our Dictionary
                 int firstDelimiter = line.IndexOf(';');
-                string key = line.Substring(0, firstDelimiter);
+                string key = line[..firstDelimiter];
                 string[] values = line.Split(';');
                 
                 _entries.Add(key, values);
             }
 
             // the last entry in the csv holds the total values for the whole of Vorarlberg
-            Total = data[data.Length - 1].Split(';');
-        }
-
-        public string[] GetEntry(string municipalityId)
-        {
-            return _entries.GetValueOrDefault(municipalityId);
+            Total = data[^1].Split(';');
         }
 
         public string[] GetIDs()
@@ -57,38 +53,32 @@ namespace VorarlbergPartitions
             return _entries.Keys.ToArray();
         }
 
-        public string[] GetHighestDensityMunicipality()
+        public string[] GetEntry(string municipalityId)
         {
-            string bestMunicipalityID = _entries.First().Key;
-            double highestDensity = 0.0;
-
-            foreach (string[] entry in _entries.Values)
-            {
-                double density = double.Parse(entry[Columns["density"]]);
-                if (density > highestDensity)
-                {
-                    bestMunicipalityID = entry[Columns["ID"]];
-                    highestDensity = density;
-                }
-            }
-            return _entries.GetValueOrDefault(bestMunicipalityID);
+            return _entries.GetValueOrDefault(municipalityId);
         }
 
-        public string[] GetLowestDensityMunicipality()
+        public string[] GetEntryWithMaxAttribute(string attributeName)
         {
-            string bestMunicipalityID = _entries.First().Key;
-            double lowestDensity = double.Parse(_entries.First().Value[Columns["density"]]);
-
-            foreach (string[] entry in _entries.Values)
-            {
-                double density = double.Parse(entry[Columns["density"]]);
-                if (density < lowestDensity)
-                {
-                    bestMunicipalityID = entry[Columns["ID"]];
-                    lowestDensity = density;
-                }
+            if (!Columns.ContainsKey(attributeName)) {
+                throw new ArgumentException("Data does not contain values with an attribute named " + attributeName);
             }
-            return _entries.GetValueOrDefault(bestMunicipalityID);
+
+            int attributeIndex = Columns[attributeName];
+            string maxDensityID = _entries.MaxBy(entry => double.Parse(entry.Value[attributeIndex])).Key;
+            return _entries.GetValueOrDefault(maxDensityID);
+        }
+
+        public string[] GetEntryWithMinAttribute(string attributeName)
+        {
+            if (!Columns.ContainsKey(attributeName))
+            {
+                throw new ArgumentException("Data does not contain values with an attribute named " + attributeName);
+            }
+
+            int attributeIndex = Columns[attributeName];
+            string maxDensityID = _entries.MinBy(entry => double.Parse(entry.Value[attributeIndex])).Key;
+            return _entries.GetValueOrDefault(maxDensityID);
         }
     }
 }

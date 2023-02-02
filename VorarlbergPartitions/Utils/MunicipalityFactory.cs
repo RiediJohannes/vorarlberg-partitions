@@ -1,22 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using VorarlbergPartitions.Resources;
 
 namespace VorarlbergPartitions
 {
     class MunicipalityFactory
     {
-        private readonly CSVBuffer _csv;
+        private readonly IMunicipalityDataSource _data;
 
-        public MunicipalityFactory(string csvPath)
+        public MunicipalityFactory(IMunicipalityDataSource dataSource)
         {
-            _csv = new CSVBuffer(csvPath);
+            _data = dataSource;
         }
 
         public Municipality FromEntry(string[] csvEntry)
         {
             // get an overview of the column names and their respective indeces
-            Dictionary<string, int> columns = _csv.Columns;
+            Dictionary<string, int> columns = _data.Columns;
 
             // create a new Municipality instance
             var municipality = new Municipality
@@ -25,8 +26,6 @@ namespace VorarlbergPartitions
                 Name = csvEntry[columns["name"]],
                 Population = int.Parse(csvEntry[columns["population"]]),
                 Area = double.Parse(csvEntry[columns["area"]]),
-
-
             };
 
             // load the municipality's neighbours lazily
@@ -36,7 +35,7 @@ namespace VorarlbergPartitions
                 foreach (string neighbourID in csvEntry[columns["neighbours"]].Split(','))
                 {
                     // fetch the data for each neighbour and create a Municipality object from it
-                    string[] neighbourEntry = _csv.GetEntry(neighbourID);
+                    string[] neighbourEntry = _data.GetEntry(neighbourID);
                     Municipality neighbour = FromEntry(neighbourEntry);
                     neighbours.Add(neighbour);
                 }

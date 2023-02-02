@@ -38,7 +38,6 @@ namespace VorarlbergPartitions
                 }
             }
 
-
             /*
              *  TODO: check by how many people we overshoot and if we can do a better last annexation
              */
@@ -58,17 +57,8 @@ namespace VorarlbergPartitions
 
         private HashSet<Municipality> FindMostSuitableAnnexation(Zone zone, HashSet<Municipality> possibleChoices)
         {
-            // choose the first zoneNeighbour as the next planned annexation for the sake of comparison to other neighbours
-            Municipality plannedAnnexation = possibleChoices.ElementAt(0);
-
             // find the zone neighbour with the highest population density => neighbour to annex next
-            foreach (Municipality neighbour in possibleChoices)
-            {
-                if (neighbour.Density > plannedAnnexation.Density)
-                {
-                    plannedAnnexation = neighbour;
-                }
-            }
+            Municipality plannedAnnexation = possibleChoices.MaxBy(m => m.Density);
 
             // check if the annexation of the selected municipality would cause "lonely municipalities" (islands)
             // abort this choice and find another one
@@ -124,7 +114,7 @@ namespace VorarlbergPartitions
 
             // create list to contain every municipality that is still connected to the first element in zonelesssMunipals
             // put one municipality out of the zonelessMunipals in this new list to check connectivity to all other municipalities from there
-            List<Municipality> reachableMunipals = new List<Municipality>();
+            List<Municipality> reachableMunipals = new();
             Municipality startMunipal = zonelessMunipals.ElementAt(0);
             reachableMunipals.Add(startMunipal);
             zonelessMunipals.Remove(startMunipal);
