@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using VorarlbergPartitions.Resources;
 
 namespace VorarlbergPartitions
@@ -17,22 +16,22 @@ namespace VorarlbergPartitions
         public Municipality FromEntry(string[] csvEntry)
         {
             // get an overview of the column names and their respective indeces
-            Dictionary<string, int> columns = _data.Columns;
+            List<string> columns = _data.Columns;
 
             // create a new Municipality instance
             var municipality = new Municipality
             {
-                Id = csvEntry[columns["ID"]],
-                Name = csvEntry[columns["name"]],
-                Population = int.Parse(csvEntry[columns["population"]]),
-                Area = double.Parse(csvEntry[columns["area"]]),
+                Id = csvEntry[columns.IndexOf("ID")],
+                Name = csvEntry[columns.IndexOf("name")],
+                Population = int.Parse(csvEntry[columns.IndexOf("population")]),
+                Area = double.Parse(csvEntry[columns.IndexOf("area")]),
             };
 
             // load the municipality's neighbours lazily
             municipality.PrepareNeighbours(new Lazy<List<Municipality>>(() =>
             {
-                List<Municipality> neighbours = new List<Municipality>();
-                foreach (string neighbourID in csvEntry[columns["neighbours"]].Split(','))
+                List<Municipality> neighbours = new();
+                foreach (string neighbourID in csvEntry[columns.IndexOf("neighbours")].Split(','))
                 {
                     // fetch the data for each neighbour and create a Municipality object from it
                     string[] neighbourEntry = _data.GetEntry(neighbourID);

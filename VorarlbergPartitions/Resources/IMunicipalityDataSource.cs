@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace VorarlbergPartitions.Resources
 {
     internal interface IMunicipalityDataSource
     {
-        Dictionary<string, int> Columns { get; }
+        List<string> Columns { get; }
         string[] Header { get; }
         string[] Total { get; }
 

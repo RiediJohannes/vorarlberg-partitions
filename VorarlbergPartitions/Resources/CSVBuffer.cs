@@ -11,7 +11,7 @@ namespace VorarlbergPartitions
     {
         private readonly Dictionary<string, string[]> _entries = new Dictionary<string, string[]>();
 
-        public Dictionary<string, int> Columns { get; } = new Dictionary<string, int>();
+        public List<string> Columns { get; } = new List<string>();
         public string[] Header { get; }
         public string[] Total { get; }
 
@@ -26,7 +26,7 @@ namespace VorarlbergPartitions
             string[] columnNames = data[0].Split(';');
             for (int i = 0; i < columnNames.Length; i++)
             {
-                Columns.Add(columnNames[i], i);
+                Columns.Add(columnNames[i]);
             }
             
             // save header data
@@ -60,23 +60,23 @@ namespace VorarlbergPartitions
 
         public string[] GetEntryWithMaxAttribute(string attributeName)
         {
-            if (!Columns.ContainsKey(attributeName)) {
+            if (!Columns.Contains(attributeName)) {
                 throw new ArgumentException("Data does not contain values with an attribute named " + attributeName);
             }
 
-            int attributeIndex = Columns[attributeName];
+            int attributeIndex = Columns.IndexOf(attributeName);
             string maxDensityID = _entries.MaxBy(entry => double.Parse(entry.Value[attributeIndex])).Key;
             return _entries.GetValueOrDefault(maxDensityID);
         }
 
         public string[] GetEntryWithMinAttribute(string attributeName)
         {
-            if (!Columns.ContainsKey(attributeName))
+            if (!Columns.Contains(attributeName))
             {
                 throw new ArgumentException("Data does not contain values with an attribute named " + attributeName);
             }
 
-            int attributeIndex = Columns[attributeName];
+            int attributeIndex = Columns.IndexOf(attributeName);
             string maxDensityID = _entries.MinBy(entry => double.Parse(entry.Value[attributeIndex])).Key;
             return _entries.GetValueOrDefault(maxDensityID);
         }

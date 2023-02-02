@@ -138,7 +138,7 @@ namespace VorarlbergPartitions
             return zonelessMunipals;
         }
 
-        private int CompareAnnexations(HashSet<Municipality> leftAnnexation, HashSet<Municipality> rightAnnexation)
+        private static int CompareAnnexations(HashSet<Municipality> leftAnnexation, HashSet<Municipality> rightAnnexation)
         {
             // calculate density of left annexation
             int leftPopulation = leftAnnexation.Sum(mun => mun.Population);
